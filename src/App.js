@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
-import { Subscribe } from "unstated";
-import DataContainer from "./DataContainer";
+import { Provider, Subscribe } from 'unstated';
+import DataContainer from './DataContainer';
 
 class FileUpload extends Component {
   render() {
@@ -46,23 +46,31 @@ const Quotes = ({ parsedData }) => {
 };
 
 const App = () => (
-  <Subscribe to={[DataContainer]}>
-    {data => (
-      <Fragment>
-        <h1>Kindle Notes Visualiser</h1>
-        <h2>1) Select your notes</h2>
-        <FileUpload data={data} />
+  <Provider>
+    <Subscribe to={[DataContainer]}>
+      {data => (
+        <Fragment>
+          <header>
+            <div className="wave" />
+            <h1>
+              Kindle Notes<br /> Visualiser
+            </h1>
+          </header>
 
-        {data.state.parsedData && data.state.parsedData.length ? (
-          <Fragment>
-            <h2>2) Parsing options</h2>
-            <Books parsedData={data.state.parsedData} />
-            <Quotes parsedData={data.state.parsedData} />
-          </Fragment>
-        ) : null}
-      </Fragment>
-    )}
-  </Subscribe>
+          <h2>1) Select your notes</h2>
+          <FileUpload data={data} />
+
+          {data.state.parsedData && data.state.parsedData.length ? (
+            <Fragment>
+              <h2>2) Parsing options</h2>
+              <Books parsedData={data.state.parsedData} />
+              <Quotes parsedData={data.state.parsedData} />
+            </Fragment>
+          ) : null}
+        </Fragment>
+      )}
+    </Subscribe>
+  </Provider>
 );
 
 export default App;
